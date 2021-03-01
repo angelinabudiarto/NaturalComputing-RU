@@ -21,9 +21,13 @@ merged_test <- read.table('merged.test')[,1]
 english_test <- read.table('english.test')[,1]
 tagalog_test <- read.table('tagalog.test')[,1]
 
-# Execute in terminal: 'java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r 4 -c -l < merged.test > Task1/merged_test_results_r4.txt'
-# Execute in terminal: 'java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r 4 -c -l < english.test > Task1/english_test_results_r4.txt'
-# Execute in terminal: 'java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r 4 -c -l < tagalog.test > Task1/tagalog_test_results_r4.txt'
+i=4
+command_merged <- sprintf('java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r %i -c -l < merged.test > Task1/merged_test_results_r%i.txt', i, i)
+command_english <- sprintf('java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r %i -c -l < english.test > Task1/english_test_results_r%i.txt', i, i)
+command_tagalog <- sprintf('java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r %i -c -l < tagalog.test > Task1/tagalog_test_results_r%i.txt', i, i)
+command_results_merged <- readline(prompt=paste("Execute in terminal:", command_merged))
+command_results_english <- readline(prompt=paste("Execute in terminal:", command_english))
+command_results_tagalog <- readline(prompt=paste("Execute in terminal:", command_tagalog))
 
 merged_results <- read.table('Task1/merged_test_results_r4.txt')[,1]
 english_results <- read.table('Task1/english_test_results_r4.txt')[,1]
