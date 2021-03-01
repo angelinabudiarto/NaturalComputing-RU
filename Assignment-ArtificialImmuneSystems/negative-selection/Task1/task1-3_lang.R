@@ -1,7 +1,7 @@
 # Natural Computing, assignment 3 
 # Guus, Bono, Charlotte 
 
-# AUC when changing parameter r (n=10)
+# folder lang contains 4 other languages. determine which can be best discriminated from english using negative selection
 
 library(pROC)
 library(comprehenr)
@@ -11,12 +11,8 @@ work_dir <- "/Users/charlottecvn/Downloads/Natural Computing/assignment_3/negati
 setwd(work_dir)
 save_dir = paste(work_dir, '/Task1', sep="")
 
-merged_test <- read.table('merged.test')[,1]
-english_test <- read.table('english.test')[,1]
-tagalog_test <- read.table('tagalog.test')[,1]
-
-#r=1, r=3, r=7, r=9
-r_values <- c(1,3,7,9)
+#r=4
+r_values <- c(4)
 
 sensitivity <- function(distinct, results){
   sensitivity_distinct = list()
@@ -43,33 +39,38 @@ specificity <- function(distinct, results){
 }
 
 #create function to loop over r values
-auc_r <- function(r_values){
+auc_r_language <- function(language, r_values){
   for (i in r_values){
-    command_merged <- sprintf('java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r %i -c -l < merged.test > Task1/merged_test_results_r%i.txt', i, i)
+    english_test <- read.table('english.test')[,1]
+    language_test <- read.table(sprintf('lang/%s.txt',language))[,1]
+    
+    command_language <- sprintf('java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r %i -c -l < lang/%s.txt > Task1/%s_test_results_r%i.txt', i, language,language, i)
     command_english <- sprintf('java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r %i -c -l < english.test > Task1/english_test_results_r%i.txt', i, i)
-    command_tagalog <- sprintf('java -jar negsel2.jar -alphabet file://english.train -self english.train -n 10 -r %i -c -l < tagalog.test > Task1/tagalog_test_results_r%i.txt', i, i)
     
-    command_results_merged <- readline(prompt=paste("Execute in terminal:", command_merged))
+    command_results_language <- readline(prompt=paste("Execute in terminal:", command_language))
     command_results_english <- readline(prompt=paste("Execute in terminal:", command_english))
-    command_results_tagalog <- readline(prompt=paste("Execute in terminal:", command_tagalog))
     
-    merged_results <- read.table(sprintf('Task1/merged_test_results_r%i.txt', i))[,1]
-    english_results <- read.table(sprintf('Task1/english_test_results_r%i.txt', i))[,1]
-    tagalog_results <- read.table(sprintf('Task1/tagalog_test_results_r%i.txt', i))[,1]
-      
+    language_results <- read.table(sprintf('Task1/%s_test_results_r%i.txt', language,i))
+    english_results <- read.table(sprintf('Task1/english_test_results_r%i.txt', i))
+    
+    merged_results <- rbind(english_results, language_results)[,1]
+    
+    language_results <- language_results[,1]
+    english_results <- english_results[,1]
+    
     sorted_anomaly <- sort(merged_results)
     distinct <- sort(unique(sorted_anomaly))
-      
-    predictors <- c(to_vec(for(i in 1:length(english_test))  0),  to_vec(for(i in 1:length(tagalog_test))  1))
+    
+    predictors <- c(to_vec(for(i in 1:length(english_test))  0),  to_vec(for(i in 1:length(language_test))  1))
     roc_object <- roc(predictors, merged_results)
     auc_roc_score <- auc(roc_object)
-      
-    sensitivity_auc <- sensitivity(distinct, tagalog_results)
+    
+    sensitivity_auc <- sensitivity(distinct, language_results)
     specificity_auc <- specificity(distinct, english_results)
-      
-    part_title <- sprintf('ROC-curve, n=10 r=%i, score=',i)
+    
+    part_title <- sprintf('ROC-curve, language:%s, n=10 r=%i, score=',language,i)
     setwd(save_dir)
-    pdf(sprintf('task1-2_ROC_r%i.pdf',i))
+    pdf(sprintf('task1-3_ROC_%s_r%i.pdf',language,i))
     plot(sort(sensitivity_auc), sort(specificity_auc), type="l", col="red", xlim=c(0,1), ylim=c(0,1),
          xlab="sensitivity", ylab="specificity", 
          main=(paste(part_title,format(round(auc_roc_score, 2), nsmall = 2))))
@@ -78,5 +79,7 @@ auc_r <- function(r_values){
     setwd(work_dir)
   }
 }
-
-auc_r(r_values)
+auc_r_language("hiligaynon", r_values)
+auc_r_language("middle-english", r_values)
+auc_r_language("plautdietsch", r_values)
+auc_r_language("xhosa", r_values)
