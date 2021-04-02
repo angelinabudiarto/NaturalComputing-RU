@@ -15,6 +15,7 @@ charset=UTF-8">
 
     <!-- Sourcing the cpm build -->
     <script src="../../build/artistoo.js"></script>
+    <script src="fpsmeter.min.js"></script>
     <script>
         "use strict"
 
@@ -29,14 +30,14 @@ charset=UTF-8">
             conf: {
                 torus : [true, true],
                 seed : 10,
-                T: 20,								// CPM temperature
+                T: 20,                                // CPM temperature
 
                 // Adhesion parameters:
                 J: [[0, 20, 20], [20, 0, 20], [20, 20, 0]],
 
                 // VolumeConstraint parameters
-                LAMBDA_V: [0, 50, 200],				// VolumeConstraint importance per cellkind
-                V: [0, 500, 200],					// Target volume of each cellkind
+                LAMBDA_V: [0, 50, 200],                // VolumeConstraint importance per cellkind
+                V: [0, 500, 200],                    // Target volume of each cellkind
 
                 LAMBDA_P: [0, 2, 100],
                 P : [0, 340, 170],
@@ -47,11 +48,11 @@ charset=UTF-8">
 
 
             },
-
+            
             // Simulation setup and configuration
             simsettings: {
                 // Cells on the grid
-                NRCELLS: [1,1],                    // Number of cells to seed for all
+                NRCELLS: [5,5],                    // Number of cells to seed for all
                 // non-background cellkinds.
                 
                 BURNIN : 500,
@@ -66,8 +67,8 @@ charset=UTF-8">
                 
                 SAVEIMG : true,
                 IMGFRAMERATE: 1,
-                SAVEPATH : "output/img/ObstaclesGrid",    // ... And save the image in this folder.
-                EXPNAME : "ObstaclesGrid",                    // Used for the filename of output images.
+                SAVEPATH : "output/img/Obstacle-start",    // ... And save the image in this folder.
+                EXPNAME : "Obstacle-start",                    // Used for the filename of output images.
                 STATSOUT : { browser: true, node: true },
                 LOGRATE : 10
             }
