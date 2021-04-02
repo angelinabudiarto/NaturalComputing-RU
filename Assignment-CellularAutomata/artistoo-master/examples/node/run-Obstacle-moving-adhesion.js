@@ -33,7 +33,7 @@ let config = {
     // Simulation setup and configuration
     simsettings: {
         // Cells on the grid
-        NRCELLS: [1,1],                    // Number of cells to seed for all
+        NRCELLS: [5,5],                    // Number of cells to seed for all
         // non-background cellkinds.
         
         BURNIN : 500,
