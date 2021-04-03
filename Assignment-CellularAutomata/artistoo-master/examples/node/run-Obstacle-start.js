@@ -18,7 +18,7 @@ let config = {
 
         // VolumeConstraint parameters
         LAMBDA_V: [0, 50, 200],                // VolumeConstraint importance per cellkind
-        V: [0, 500, 200],                    // Target volume of each cellkind
+        V: [0, 500, 250],                    // Target volume of each cellkind
 
         LAMBDA_P: [0, 2, 100],
         P : [0, 340, 170],
