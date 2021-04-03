@@ -29,7 +29,7 @@ charset=UTF-8">
             // CPM parameters and configuration
             conf: {
                 torus : [true, true],
-                seed : 10,
+                seed : 2021,
                 T: 20,                                // CPM temperature
 
                 // Adhesion parameters:
@@ -39,9 +39,9 @@ charset=UTF-8">
                 LAMBDA_V: [0, 50, 200],                // VolumeConstraint importance per cellkind
                 V: [0, 500, 200],                    // Target volume of each cellkind
 
-                LAMBDA_P: [0, 2, 200],
-                P : [0, 340, 170],
-
+                LAMBDA_P: [0, 2, 100],
+                P : [0, 340, 80],
+                
                 LAMBDA_ACT : [0,400,0],
                 MAX_ACT : [0,80,0],
                 ACT_MEAN : "geometric"

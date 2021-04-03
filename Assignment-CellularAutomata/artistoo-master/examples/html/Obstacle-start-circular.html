@@ -36,14 +36,14 @@ charset=UTF-8">
                 J: [[0, 20, 20], [20, 0, 20], [20, 20, 0]],
 
                 // VolumeConstraint parameters
-                LAMBDA_V: [0, 50, 50],                // VolumeConstraint importance per cellkind
-                V: [0, 500, 500],                    // Target volume of each cellkind
+                LAMBDA_V: [0, 50, 200],                // VolumeConstraint importance per cellkind
+                V: [0, 500, 200],                    // Target volume of each cellkind
 
-                LAMBDA_P: [0, 2, 2],
-                P : [0, 300, 300],
+                LAMBDA_P: [0, 2, 100],
+                P : [0, 340, 80],
 
-                LAMBDA_ACT : [0,400,0],
-                MAX_ACT : [0,50,0],
+                LAMBDA_ACT : [0,100,0],
+                MAX_ACT : [0,80,0],
                 ACT_MEAN : "geometric"
 
 
@@ -67,8 +67,8 @@ charset=UTF-8">
                 
                 SAVEIMG : true,
                 IMGFRAMERATE: 1,
-                SAVEPATH : "output/img/Obstacle-moving",    // ... And save the image in this folder.
-                EXPNAME : "Obstacle-moving",                    // Used for the filename of output images.
+                SAVEPATH : "output/img/Obstacle-start-circular",    // ... And save the image in this folder.
+                EXPNAME : "Obstacle-start-circular",                    // Used for the filename of output images.
                 STATSOUT : { browser: true, node: true },
                 LOGRATE : 10
             }
@@ -87,7 +87,7 @@ charset=UTF-8">
             meter.tick()
             requestAnimationFrame( step )
         }
-        
+    
         class PercentageActive extends CPM.Stat {
             computePercentageOfCell( cid, cellpixels ){
                 const current_pixels = cellpixels[cid]
@@ -128,7 +128,7 @@ charset=UTF-8">
 </head>
 
 <body onload="initialize()">
-    <h1>Obstacle simulation - moving obstacles</h1>
+    <h1>Obstacle simulation - start simulation</h1>
     <p>Group 8 - Natural Computing, RU</p>
 </body>
 
