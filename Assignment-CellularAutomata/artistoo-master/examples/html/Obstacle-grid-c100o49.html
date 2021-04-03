@@ -40,9 +40,9 @@ charset=UTF-8">
                 V: [0, 500, 200],                    // Target volume of each cellkind
 
                 LAMBDA_P: [0, 2, 100],
-                P : [0, 340, 170],
+                P : [0, 340, 80],
 
-                LAMBDA_ACT : [0,100,0],
+                LAMBDA_ACT : [0,400,0],
                 MAX_ACT : [0,80,0],
                 ACT_MEAN : "geometric"
 
@@ -52,7 +52,7 @@ charset=UTF-8">
             // Simulation setup and configuration
             simsettings: {
                 // Cells on the grid
-                NRCELLS: [5,0],                    // Number of cells to seed for all
+                NRCELLS: [1,1],                    // Number of cells to seed for all
                 // non-background cellkinds.
                 
                 BURNIN : 500,
@@ -67,8 +67,8 @@ charset=UTF-8">
                 
                 SAVEIMG : true,
                 IMGFRAMERATE: 1,
-                SAVEPATH : "output/img/Obstacle-start",    // ... And save the image in this folder.
-                EXPNAME : "Obstacle-start",                    // Used for the filename of output images.
+                SAVEPATH : "output/img/Obstacle-grid-c100o49",    // ... And save the image in this folder.
+                EXPNAME : "Obstacle-grid-c100o49",                    // Used for the filename of output images.
                 STATSOUT : { browser: true, node: true },
                 LOGRATE : 10
             }
@@ -77,17 +77,20 @@ charset=UTF-8">
         let sim, meter
         
         function initialize() {
-            sim = new CPM.Simulation(config, { logStats: logStats } )
+            let custommethods = {
+                initializeGrid : initializeGrid
+            }
+            sim = new CPM.Simulation( config, custommethods, { logStats: logStats } )
             meter = new FPSMeter({left:"auto", right:"5px"})
             step()
         }
 
-        function step() {
+        function step(){
             sim.step()
             meter.tick()
             requestAnimationFrame( step )
         }
-    
+        
         class PercentageActive extends CPM.Stat {
             computePercentageOfCell( cid, cellpixels ){
                 const current_pixels = cellpixels[cid]
@@ -122,13 +125,41 @@ charset=UTF-8">
                         this.C.cellKind(cid) + "\t" + theperc )
                 }
         }
+        
+        function initializeGrid(){
+
+		    // add the GridManipulator if not already there and if you need it
+            if( !this.helpClasses["gm"] ){ this.addGridManipulator() }
+
+            let num_cells = 100
+
+            var ni = 0
+            for(ni = 0; ni < num_cells; ni++){this.gm.seedCell(1)}
+
+            let radius = 5
+            let num_obstacles = 6
+
+            let side_i = 250 
+            let side_j = 250 
+            var i = 0
+            var j = 0
+
+            for(i = side_i/num_obstacles; i < side_i; i += (side_i/num_obstacles)){
+                for(j = side_i/num_obstacles; j < side_j; j += (side_j/num_obstacles)){
+                    let circ = this.gm.makeCircle( [Math.round(i),Math.round(j)], radius )
+                    this.gm.assignCellPixels( circ, 2)
+                }
+            }
+        }
+
+
 
 
     </script>
 </head>
 
 <body onload="initialize()">
-    <h1>Obstacle simulation - start simulation (no obstacles only cells)</h1>
+    <h1>Obstacle simulation - grid, 100 cells, 49 obstacle</h1>
     <p>Group 8 - Natural Computing, RU</p>
 </body>
 
