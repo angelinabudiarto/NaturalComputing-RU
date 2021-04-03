@@ -10,7 +10,7 @@ let config = {
     // CPM parameters and configuration
     conf: {
         torus : [true, true],
-        seed : 10,
+        seed : 2021,
         T: 20,                                // CPM temperature
 
         // Adhesion parameters:

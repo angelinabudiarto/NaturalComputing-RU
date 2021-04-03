@@ -10,7 +10,7 @@ let config = {
     // CPM parameters and configuration
     conf: {
         torus : [true, true],
-        seed : 10,
+        seed : 2021,
         T: 20,                                // CPM temperature
 
         // Adhesion parameters:
@@ -21,7 +21,7 @@ let config = {
         V: [0, 500, 200],                    // Target volume of each cellkind
 
         LAMBDA_P: [0, 2, 100],
-        P : [0, 340, 170],
+        P : [0, 340, 80],
 
         LAMBDA_ACT : [0,400,0],
         MAX_ACT : [0,80,0],
