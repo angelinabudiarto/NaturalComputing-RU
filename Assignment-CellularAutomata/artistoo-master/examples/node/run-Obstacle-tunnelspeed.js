@@ -10,7 +10,7 @@ let config = {
     // CPM parameters and configuration
     conf: {
         torus : [true, true],
-        seed : 10,
+        seed : 21,
         T: 20,                                // CPM temperature
 
         // Adhesion parameters:
@@ -21,7 +21,7 @@ let config = {
         V: [0, 500, 150],                    // Target volume of each cellkind
 
         LAMBDA_P: [0, 2, 500],
-        P : [0, 340, 90],
+        P : [0, 340, 80],
 
         LAMBDA_ACT : [0,400,0],
         MAX_ACT : [0,80,0],
@@ -60,32 +60,47 @@ let custommethods = {
 }
 
 let sim = new CPM.Simulation( config , custommethods )
-                                      
-sim.C.add( new CPM.AttractionPointConstraint({
-            LAMBDA_ATTRACTIONPOINT : [500,500,500],
-            ATTRACTIONPOINT : [[NaN,NaN],[0,sim.C.extents[1]/2], [NaN,NaN] ]}
-) )
+
+let Cdir = new CPM.AttractionPointConstraint({
+    LAMBDA_ATTRACTIONPOINT : [500,500,500],
+    ATTRACTIONPOINT : [[NaN,NaN],[0,sim.C.extents[1]/2], [NaN,NaN] ]
+})
 
 function initializeGrid(){
-        
-        // add the initializer if not already there
-        if( !this.helpClasses["gm"] ){ this.addGridManipulator() }
-        let step = 8
-        for( var i = 1 ; i < this.C.extents[0] ; i += step ){
-            this.gm.seedCellAt( 2, [0,i] )
-        }
-        for( var i = 1 ; i < this.C.extents[0] ; i += step ){
-            this.gm.seedCellAt( 2, [20,i] )
-        }
-        for( var i = 1 ; i < this.C.extents[0] ; i += step ){
-            this.gm.seedCellAt( 2, [50,i] )
-        }
-        for( var i = 1 ; i < this.C.extents[0] ; i += step ){
-            this.gm.seedCellAt( 2, [90,i] )
-        }
-        this.gm.seedCellAt( 1, [10,this.C.extents[1]/2] )
-        this.gm.seedCellAt( 1, [35,this.C.extents[1]/2] )
-        this.gm.seedCellAt( 1, [70,this.C.extents[1]/2] )
+                // add the initializer if not already there
+                if( !this.helpClasses["gm"] ){ this.addGridManipulator() }
+                let step = 8
+                for( var i = 1 ; i < this.C.extents[0] ; i += step ){
+                    this.gm.seedCellAt( 2, [0,i] )
+                }
+                for( var i = 1 ; i < this.C.extents[0] ; i += step ){
+                    this.gm.seedCellAt( 2, [20,i] )
+                }
+                for( var i = 1 ; i < this.C.extents[0] ; i += step ){
+                    this.gm.seedCellAt( 2, [45,i] )
+                }
+                for( var i = 1 ; i < this.C.extents[0] ; i += step ){
+                    this.gm.seedCellAt( 2, [75,i] )
+                }
+                for( var i = 1 ; i < this.C.extents[0] ; i += step ){
+                    this.gm.seedCellAt( 2, [110,i] )
+                }
+                for( var i = 1 ; i < this.C.extents[0] ; i += step ){
+                    this.gm.seedCellAt( 2, [150,i] )
+                }
+                for( var i = 1 ; i < this.C.extents[0] ; i += step ){
+                    this.gm.seedCellAt( 2, [195,i] )
+                }
+                for( var i = 1 ; i < this.C.extents[0] ; i += step ){
+                    this.gm.seedCellAt( 2, [245,i] )
+                }
+                this.gm.seedCellAt( 1, [10,this.C.extents[1]/2] )
+                this.gm.seedCellAt( 1, [33,this.C.extents[1]/2] )
+                this.gm.seedCellAt( 1, [60,this.C.extents[1]/2] )
+                this.gm.seedCellAt( 1, [93,this.C.extents[1]/2] )
+                this.gm.seedCellAt( 1, [130,this.C.extents[1]/2] )
+                this.gm.seedCellAt( 1, [172,this.C.extents[1]/2] )
+                this.gm.seedCellAt( 1, [220,this.C.extents[1]/2] )
 }
 
 sim.run()
