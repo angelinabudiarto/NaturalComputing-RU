@@ -10,7 +10,7 @@ let config = {
     // CPM parameters and configuration
     conf: {
         torus : [true, true],
-        seed : 10,
+        seed : 2021,
         T: 20,                                // CPM temperature
 
         // Adhesion parameters:
@@ -23,7 +23,7 @@ let config = {
         LAMBDA_P: [0, 2, 100],
         P : [0, 340, 170],
 
-        LAMBDA_ACT : [0,400,0],
+        LAMBDA_ACT : [0,100,0],
         MAX_ACT : [0,80,0],
         ACT_MEAN : "geometric"
 
@@ -33,7 +33,7 @@ let config = {
     // Simulation setup and configuration
     simsettings: {
         // Cells on the grid
-        NRCELLS: [5,5],                    // Number of cells to seed for all
+        NRCELLS: [5,0],                    // Number of cells to seed for all
         // non-background cellkinds.
         
         BURNIN : 500,
