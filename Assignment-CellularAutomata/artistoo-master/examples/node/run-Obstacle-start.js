@@ -36,8 +36,8 @@ let config = {
         NRCELLS: [5,0],                    // Number of cells to seed for all
         // non-background cellkinds.
         
-        BURNIN : 500,
-        RUNTIME: 1000,                  // Only used in node
+        BURNIN : 50,
+        RUNTIME: 5000,                  // Only used in node
 
         CANVASCOLOR: "eaecef",
         CELLCOLOR: ["000000", "FF0000"],
