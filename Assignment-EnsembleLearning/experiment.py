@@ -12,11 +12,11 @@ from numpy import genfromtxt
 from sklearn.ensemble import IsolationForest
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
-#%%
+#%% load the data
 data = genfromtxt('winequality-white.csv', delimiter=';')
 y=data[1:len(data),11]
 X=data[1:len(data),0:11]
-#%%
+#%% make a histogram
 scores=[]
 counts=[]
 for i in range(1,11):
@@ -31,7 +31,7 @@ plt.xlabel('Quality scores(1-10)')
 plt.ylabel('Counts')
 plt.title('Distribution of quality scores')
 plt.show()
-#%%
+#%% bin the scores into poor, mediocre and excellent 
 labels = np.empty(len(y), dtype=str)
 for i in range(len(y)):
     if y[i]<5:
@@ -43,19 +43,20 @@ for i in range(len(y)):
 unique, counts = np.unique(labels, return_counts=True)
 print(dict(zip(unique, counts)))
 y=labels
-#%%
+#%% create train and test set
 np.random.seed(1)
 indices = np.random.permutation(X.shape[0])
 
 idx_train, idx_test = indices[:int(len(X)*0.80)],  indices[int(len(X)*0.80):]
 X_train, X_test = X[idx_train,:], X[idx_test,:]
 y_train, y_test = y[idx_train], y[idx_test]
-#%%
+#%% make a new train set with proportion p mediocre samples
+p=4
 [idx_e] = np.where(y_train=='e')
 [idx_m] = np.where(y_train=='m')
 [idx_p] = np.where(y_train=='p')
 m = int((len(idx_e)+len(idx_p))/2)
-idx_m=idx_m[0:int(4*m)]
+idx_m=idx_m[0:int(p*m)]
 idx_train=np.concatenate((idx_e,idx_m,idx_p))
 X_train, y_train = X_train[idx_train,:], y_train[idx_train]
 
@@ -64,7 +65,7 @@ X_train, y_train = X_train[idx_train,:], y_train[idx_train]
 n=500
 d=10
 
-#%%
+#%% train an isolation forest and random forest on top
 iso_forest = IsolationForest(random_state=0, n_estimators=n).fit(X_train)
 outliers = iso_forest.predict(X_train)
 [idx_out]=(outliers<0).nonzero()
@@ -78,7 +79,7 @@ out_forest.fit(X_out,y_out)
 pred_out_train = out_forest.predict(X_out)
 print('training score', sum(pred_out_train==y_out)/len(y_out))
 
-
+#test the model
 outliers = iso_forest.predict(X_test)
 [idx_out]=(outliers<0).nonzero()
 X_out, y_out= X_test[idx_out], y_test[idx_out]
@@ -86,7 +87,7 @@ pred_out_test = out_forest.predict(X_out)
 print('test score', sum(pred_out_test==y_out)/len(y_out))
 print(classification_report(y_out, pred_out_test))
 
-#%%
+#%% train regular random forest
 n=500
 d=10
 print(n,d)
@@ -95,16 +96,13 @@ reg_forest.fit(X_train,y_train)
 pred_reg_train = reg_forest.predict(X_train)
 print('training score', sum(pred_reg_train==y_train)/len(y_train))
 
-
-
-
+#test the model
 pred_reg_test = reg_forest.predict(X_test)
 print('test score', sum(pred_reg_test==y_test)/len(y_test))
 print(classification_report(y_test, pred_reg_test))
 
-
-#%%
-
+#%% results for the three experiments
+#nr of trees
 n=[10,50,100,500,1000,5000]
 x=range(len(n))
 e_p=np.array([16,16,16,17,17,16])/100
@@ -126,7 +124,7 @@ plt.ylabel('classification score')
 plt.title('Classification results for different numbers of trees')
 plt.show()
 
-#%%
+#%% depth of trees
 d=[2,5,10,20,50,100]
 x=range(len(d))
 e_p=np.array([11,13,17,17,17,17])/100
@@ -148,7 +146,7 @@ plt.ylabel('classification score')
 plt.title('Classification results for different depths of trees')
 plt.show()
 
-#%%
+#%% class imbalance
 
 i=['4:1', '2:1', '1:1', '1:2', '1:4', '1:26(original)']
 x=range(len(i))
