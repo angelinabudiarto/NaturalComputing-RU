@@ -40,7 +40,7 @@ charset=UTF-8">
                 V: [0, 500, 150],					// Target volume of each cellkind
 
                 LAMBDA_P: [0, 2, 500],
-                P : [0, 340, 80],
+                P : [0, 340, 90],
 
                 LAMBDA_ACT : [0,400,0],
                 MAX_ACT : [0,80,0],
@@ -73,27 +73,34 @@ charset=UTF-8">
             }
         }
     
-        let sim
+        let sim, meter
+        
+        // Variables needed for LogStats (mean distance)
+        let counter=0
+        var old_cells = {}
+        var new_cells = {}
+        var cells_speed = []
         
         function initialize() {
-
             let custommethods = {
-                initializeGrid : initializeGrid
+                initializeGrid : initializeGrid,
+                logStats:logStats
             }
             sim = new CPM.Simulation(config, custommethods )
+            //meter = new FPSMeter({left:"auto", right:"5px"})
             step()
         }
-    
-        let Cdir = new CPM.AttractionPointConstraint({
-            LAMBDA_ATTRACTIONPOINT : [500,500,500],
-            ATTRACTIONPOINT : [[NaN,NaN],[0,sim.C.extents[1]/2], [NaN,NaN] ]
-        })
                                           
         function step() {
             sim.step()
-            requestAnimationFrame(step)
+            //meter.tick()
+            if(counter>100){
+                logStats()
+                counter=0
+            }
+            counter++
+            requestAnimationFrame( step )
         }
-                                          
         function initializeGrid(){
 
             // add the initializer if not already there
@@ -131,7 +138,37 @@ charset=UTF-8">
             this.gm.seedCellAt( 1, [172,this.C.extents[1]/2] )
             this.gm.seedCellAt( 1, [220,this.C.extents[1]/2] )
         }
+        function logStats() {
+            let n_cells = 0
+            let centroids = sim.C.getStat(CPM.CentroidsWithTorusCorrection)
+            let totaldist = 0
+            let cellspeeds=[]
+            
+            for( let i of sim.C.cellIDs() ){
+                if (sim.C.cellKind(i)==1){
+                    if (!(i in old_cells)){
+                        old_cells[i] = centroids[i]
+                        new_cells[i] = centroids[i]
+                    }else{
+                        let x = old_cells[i][0]-new_cells[i][0]
+                        let y = old_cells[i][1]-new_cells[i][1]
+                        let dist = Math.sqrt(Math.pow(x,2)+Math.pow(y,2))
+                        cellspeeds[i]=y
+                        totaldist+=dist
+                        
+                        old_cells[i] = new_cells[i]
+                        new_cells[i] = centroids[i]
+                    }
 
+                    n_cells++
+                }
+
+            }
+            let meandist = totaldist/n_cells
+            cells_speed.push(meandist)
+            console.log(cellspeeds)
+        }
+                                          
     </script>
 </head>
 

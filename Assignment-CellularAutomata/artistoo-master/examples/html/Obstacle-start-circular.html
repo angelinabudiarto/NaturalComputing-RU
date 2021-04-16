@@ -55,7 +55,7 @@ charset=UTF-8">
                 NRCELLS: [5,5],                    // Number of cells to seed for all
                 // non-background cellkinds.
                 
-                BURNIN : 500,
+                BURNIN : 50,
                 RUNTIME: 1000,                  // Only used in node
 
                 CANVASCOLOR: "eaecef",
@@ -76,8 +76,17 @@ charset=UTF-8">
 
         let sim, meter
         
+        // Variables needed for LogStats (mean distance)
+        var old_cells = {}
+        var new_cells = {}
+        var cells_speed = []
+        
         function initialize() {
-            sim = new CPM.Simulation(config, { logStats: logStats } )
+            let custommethods = {
+                //initializeGrid : initializeGrid,
+                logStats:logStats
+            }
+            sim = new CPM.Simulation(config, custommethods )
             meter = new FPSMeter({left:"auto", right:"5px"})
             step()
         }
@@ -85,42 +94,34 @@ charset=UTF-8">
         function step() {
             sim.step()
             meter.tick()
+            logStats()
             requestAnimationFrame( step )
-        }
-    
-        class PercentageActive extends CPM.Stat {
-            computePercentageOfCell( cid, cellpixels ){
-                const current_pixels = cellpixels[cid]
-                const totalPixels = current_pixels.length
-
-                let activePixels = 0
-                for( let i = 0; i < current_pixels.length; i++ ){
-                    const pos = this.M.grid.p2i( current_pixels[i] )
-                    if( this.M.getConstraint( "ActivityConstraint" ).pxact( pos ) > 0 ){
-                        activePixels++
-                    }
-                }
-
-                return ( 100 * activePixels / totalPixels )
-           }
-
-            compute(){
-                const cellpixels = this.M.getStat( CPM.PixelsByCell )
-                let percentages = {}
-                for( let cid of this.M.cellIDs() ){
-                    percentages[cid] = this.computePercentageOfCell( cid, cellpixels )
-                }
-                return percentages
-            }
         }
 
         function logStats() {
-                const allpercentages = this.C.getStat( PercentageActive )
-                for( let cid of this.C.cellIDs() ){
-                    let theperc = allpercentages[cid]
-                    console.log( this.time + "\t" + cid + "\t" +
-                        this.C.cellKind(cid) + "\t" + theperc )
+            // Mean distance between the cells
+            let n_cells = 0
+            let centroids = sim.C.getStat(CPM.CentroidsWithTorusCorrection)
+            let totaldist = 0
+            for( let i of sim.C.cellIDs() ){
+                if (sim.C.cellKind(i)==1){
+                    if (!(i in old_cells)){
+                        old_cells[i] = centroids[i]
+                        new_cells[i] = centroids[i]
+                    }else{
+                        let x = old_cells[i][0]-new_cells[i][0]
+                        let y = old_cells[i][1]-new_cells[i][1]
+                        let dist = Math.sqrt(Math.pow(x,2)+Math.pow(y,2))
+                        totaldist+=dist
+                        old_cells[i] = new_cells[i]
+                        new_cells[i] = centroids[i]
+                    }
+                    n_cells++
                 }
+            }
+            let meandist = totaldist/n_cells
+            cells_speed.push(meandist)
+            console.log(meandist)
         }
 
 

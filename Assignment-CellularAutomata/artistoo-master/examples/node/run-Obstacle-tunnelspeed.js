@@ -21,7 +21,7 @@ let config = {
         V: [0, 500, 150],                    // Target volume of each cellkind
 
         LAMBDA_P: [0, 2, 500],
-        P : [0, 340, 80],
+        P : [0, 340, 90],
 
         LAMBDA_ACT : [0,400,0],
         MAX_ACT : [0,80,0],
@@ -36,8 +36,8 @@ let config = {
         NRCELLS: [0,0],                    // Number of cells to seed for all
         // non-background cellkinds.
         
-        BURNIN : 500,
-        RUNTIME: 5000,                  // Only used in node
+        BURNIN : 5,
+        RUNTIME: 500,                  // Only used in node
 
         CANVASCOLOR: "eaecef",
         CELLCOLOR: ["000000", "FF0000"],
@@ -60,11 +60,6 @@ let custommethods = {
 }
 
 let sim = new CPM.Simulation( config , custommethods )
-
-let Cdir = new CPM.AttractionPointConstraint({
-    LAMBDA_ATTRACTIONPOINT : [500,500,500],
-    ATTRACTIONPOINT : [[NaN,NaN],[0,sim.C.extents[1]/2], [NaN,NaN] ]
-})
 
 function initializeGrid(){
                 // add the initializer if not already there
