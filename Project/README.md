@@ -1,5 +1,7 @@
 Natural Computing Project - Group 8
 
+This repository includes source code, data, a short manual, and a sample run.
+
 # Data
 The PCam dataset consists of 220K labeled images. Each image is of size 96x96. When the images is labeled as positive, the center (32x32) contains at least one pixel containing a cancer cell (metastatic tissue). The dataset contains 2 classes. In order to execute the code, 1000 samples have been selected due to limited computing resources.
 Data can be retrieved from [Kaggle](https://github.com/basveeling/pcam) or [GitHub](https://www.kaggle.com/andrewmvd/metastatic-tissue-classification-patchcamelyon).
@@ -7,3 +9,15 @@ Data can be retrieved from [Kaggle](https://github.com/basveeling/pcam) or [GitH
 # VGG16 + evolutionary algorithms
 In this project we explore three nature inspired alternatives for gradient descent to retrain a well known deep learning model to apply it on a new classification task. The techniques we evaluate are Particle Swarm Optimization, States of Matter Search and Genetic Algorithm. We will retrain the prediction layer of the VGG16 network that was pretrained on ImageNet. In the end we apply this network to the patch camelyon dataset which is a benchmark dataset for a pathological classification problem concerning the identification of metastatic tissue in lymph nodes. Performanced are compared with an instantiation of the network that is trained using Stochastic Gradient Descent with the backpropagation algorithm.
 
+# Manual 
+Instructions to repeat project experiments performed:
+
+1) Install the requirements (txt file)
+   ```` 
+    cd VGG16-evolutionary
+    pip install -r requirements.txt
+   ```` 
+2) Run the wanted experiment to reproduce. Results will be outputed in the notebook.
+
+# Sample run
+! TO DO
