@@ -20,6 +20,7 @@ Instructions to repeat project experiments performed:
 2) Run the wanted experiment to reproduce. Results will be outputed in the notebook.
 
 ## Kaggle notebooks
+#### Genetic Algorithm
 In the case of the Genetic Algorithm a Kaggle notebook is used. There are several example runs on how that looked on Kaggle but for repeating the following has to be done:
 1) Import the base notebook to a Kaggle notebook
 2) Make sure to include the `metastatic-tissue-classification-patchcamelyon` dataset.
