@@ -20,7 +20,7 @@ Instructions to repeat project experiments in general when not using Kaggle:
 2) Download the data
 2) Run the wanted experiment to reproduce. Results will be outputed in the notebook.
 
-## Kaggle notebooks
+## Kaggle Notebooks
 #### Genetic Algorithm
 In the case of the Genetic Algorithm a Kaggle notebook is used. There are several example runs on how that looked on Kaggle but for repeating the following has to be done:
 1) Import the base notebook to a Kaggle notebook
@@ -39,4 +39,4 @@ In the case of the PSO a Kaggle notebook is used. There are several example runs
 
 
 # Sample run
-! TO DO
+For the sample runs the example runs of the jupyter notebooks can be viewed, output is included. 
